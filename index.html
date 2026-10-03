@@ -73,7 +73,7 @@
 
         .forecast-row {
             font-size: 20px;
-            margin: 12px 0;
+            margin: 8px 0;
         }
 
         .forecast-time {
@@ -87,9 +87,16 @@
             width: 65px;
         }
 
+        .forecast-icon {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
         .day-row {
             font-size: 20px;
-            margin: 12px 0;
+            margin: 8px 0;
         }
 
         .day-name {
@@ -105,6 +112,13 @@
 
         .day-rain {
             display: inline-block;
+        }
+
+        .day-icon {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            margin-left: 10px;
         }
 
         .news-box {
@@ -221,6 +235,59 @@
             now.toDateString();
 
 
+        /* WEATHER ICON */
+
+        function getWeatherIcon(code) {
+
+            if (code === 0 || code === 1) {
+                return "images/SUNNY.png";
+            }
+
+            if (code === 2) {
+                return "images/PARTLY_CLOUDY.png";
+            }
+
+            if (code === 3) {
+                return "images/CLOUDY.png";
+            }
+
+            if (code === 45 || code === 48) {
+                return "images/FOG.png";
+            }
+
+            if (
+                code === 51 || code === 53 || code === 55 ||
+                code === 56 || code === 57 ||
+                code === 61 || code === 63 || code === 65 ||
+                code === 66 || code === 67
+            ) {
+                return "images/RAIN.png";
+            }
+
+            if (
+                code === 80 || code === 81 || code === 82
+            ) {
+                return "images/SHOWERS.png";
+            }
+
+            if (
+                code === 71 || code === 73 || code === 75 ||
+                code === 77 || code === 85 || code === 86
+            ) {
+                return "images/SNOW.png";
+            }
+
+            if (
+                code === 95 || code === 96 ||
+                code === 97 || code === 99
+            ) {
+                return "images/STORM.png";
+            }
+
+            return "images/CLOUDY.png";
+        }
+
+
         /* WEATHER API */
 
         var xhr = new XMLHttpRequest();
@@ -282,6 +349,11 @@
 
                     var rain =
                         data.hourly.precipitation_probability[i];
+
+                    var icon =
+                        getWeatherIcon(
+                            data.hourly.weather_code[i]
+                        );
 
 
                     weatherText +=
@@ -349,6 +421,11 @@
                     var rainChance =
                         data.daily.precipitation_probability_max[d];
 
+                    var dailyIcon =
+                        getWeatherIcon(
+                            data.daily.weather_code[d]
+                        );
+
 
                     dailyText +=
 
@@ -369,6 +446,10 @@
                         rainChance +
                         "% rain" +
                         "</span>" +
+
+                        "<img class='day-icon' src='" +
+                        dailyIcon +
+                        "'>" +
 
                         "</div>";
                 }
