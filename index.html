@@ -78,11 +78,19 @@
                 month: "long",
                 year: "numeric"
             });
-  fetch("https://api.open-meteo.com/v1/forecast?latitude=53.4808&longitude=-2.2426&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m&daily=sunrise,sunset&timezone=Europe%2FLondon&forecast_days=2)
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(data) {
+ var xhr = new XMLHttpRequest();
+
+xhr.open(
+    "GET",
+    "https://api.open-meteo.com/v1/forecast?latitude=53.4808&longitude=-2.2426&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m&daily=sunrise,sunset&timezone=Europe%2FLondon&forecast_days=2",
+    true
+);
+
+xhr.onreadystatechange = function() {
+
+    if (xhr.readyState === 4 && xhr.status === 200) {
+
+        var data = JSON.parse(xhr.responseText);
 
         var currentHour = data.current.time.substring(0, 13);
         var startIndex = 0;
@@ -111,13 +119,16 @@
         }
 
         document.getElementById("weatherText").innerHTML = weatherText;
-        
+
         var sunrise = data.daily.sunrise[0].substring(11, 16);
         var sunset = data.daily.sunset[0].substring(11, 16);
 
-document.getElementById("sunText").innerHTML =
-    "☀ Sunrise " + sunrise + " &nbsp; ☾ Sunset " + sunset;
-    });
+        document.getElementById("sunText").innerHTML =
+            "☀ Sunrise " + sunrise + " &nbsp; ☾ Sunset " + sunset;
+    }
+};
+
+xhr.send();
     </script>
 
 </body>
