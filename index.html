@@ -1,29 +1,487 @@
-var hourlyIcon =
-    getWeatherIcon(
-        data.hourly.weather_code[i]
-    );
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fridge Newspaper</title>
+
+    <style>
+
+        body {
+            background: white;
+            color: black;
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 5px;
+        }
+
+        .date-row {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .date {
+            display: inline-block;
+        }
+
+        .sun-times {
+            float: right;
+            text-align: right;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .divider {
+            border-top: 3px solid black;
+            margin-top: 10px;
+            padding-top: 15px;
+        }
+
+        .weather-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .weather-layout {
+            width: 100%;
+        }
+
+        .weather-left {
+            width: 50%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .weather-right {
+            width: 45%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .subheading {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .forecast-row {
+            font-size: 20px;
+            margin: 8px 0;
+        }
+
+        .forecast-time {
+            display: inline-block;
+            width: 70px;
+            font-weight: bold;
+        }
+
+        .forecast-temp {
+            display: inline-block;
+            width: 65px;
+        }
+
+        .forecast-icon {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .day-row {
+            font-size: 20px;
+            margin: 8px 0;
+        }
+
+        .day-name {
+            display: inline-block;
+            width: 55px;
+            font-weight: bold;
+        }
+
+        .day-temp {
+            display: inline-block;
+            width: 110px;
+        }
+
+        .day-rain {
+            display: inline-block;
+        }
+
+        .day-icon {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .news-box {
+            border-top: 3px solid black;
+            padding-top: 15px;
+            margin-top: 20px;
+        }
+
+        .news-title {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .headline {
+            font-size: 28px;
+            margin: 18px 0;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>THE FRIDGE</h1>
+
+    <div class="date-row">
+
+        <div class="date">
+            <span id="date"></span>
+        </div>
+
+        <div class="sun-times">
+            SUNRISE <span id="sunriseText">--:--</span>
+            &nbsp;&nbsp;
+            SUNSET <span id="sunsetText">--:--</span>
+        </div>
+
+        <div class="clear"></div>
+
+    </div>
+
+    <div class="divider"></div>
 
 
-weatherText +=
+    <!-- WEATHER -->
 
-    "<div class='forecast-row'>" +
+    <div class="weather-title">
+        WEATHER
+    </div>
 
-    "<span class='forecast-time'>" +
-    time +
-    "</span>" +
 
-    "<img class='forecast-icon' src='" +
-    hourlyIcon +
-    "'>" +
+    <div class="weather-layout">
 
-    "<span class='forecast-temp'>" +
-    temperature +
-    "°C" +
-    "</span>" +
 
-    "<span>" +
-    rain +
-    "% rain" +
-    "</span>" +
+        <!-- LEFT COLUMN -->
 
-    "</div>";
+        <div class="weather-left">
+
+            <div class="subheading">
+                NEXT 6 HRS.
+            </div>
+
+            <div id="weatherText">
+                Loading weather...
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="weather-right">
+
+            <div class="subheading">
+                NEXT FEW DAYS
+            </div>
+
+            <div id="dailyText">
+                Loading forecast...
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- NEWS -->
+
+    <div class="news-box">
+
+        <div class="news-title">
+            NEWS
+        </div>
+
+        <div class="headline">
+            Welcome to your fridge newspaper.
+        </div>
+
+        <div class="headline">
+            Your daily briefing will appear here.
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* DATE */
+
+        var now = new Date();
+
+        document.getElementById("date").innerHTML =
+            now.toDateString();
+
+
+        /* WEATHER ICON */
+
+        function getWeatherIcon(code) {
+
+            if (code === 0 || code === 1) {
+                return "images/SUNNY.png";
+            }
+
+            if (code === 2) {
+                return "images/PARTLY_CLOUDY.png";
+            }
+
+            if (code === 3) {
+                return "images/CLOUDY.png";
+            }
+
+            if (code === 45 || code === 48) {
+                return "images/FOG.png";
+            }
+
+            if (
+                code === 51 || code === 53 || code === 55 ||
+                code === 56 || code === 57 ||
+                code === 61 || code === 63 || code === 65 ||
+                code === 66 || code === 67
+            ) {
+                return "images/RAIN.png";
+            }
+
+            if (
+                code === 80 || code === 81 || code === 82
+            ) {
+                return "images/SHOWERS.png";
+            }
+
+            if (
+                code === 71 || code === 73 || code === 75 ||
+                code === 77 || code === 85 || code === 86
+            ) {
+                return "images/SNOW.png";
+            }
+
+            if (
+                code === 95 || code === 96 ||
+                code === 97 || code === 99
+            ) {
+                return "images/STORM.png";
+            }
+
+            return "images/CLOUDY.png";
+        }
+
+
+        /* WEATHER API */
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open(
+            "GET",
+            "https://api.open-meteo.com/v1/forecast?latitude=53.4808&longitude=-2.2426&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=Europe%2FLondon&forecast_days=5",
+            true
+        );
+
+
+        xhr.onreadystatechange = function() {
+
+            if (xhr.readyState === 4 && xhr.status === 200) {
+
+                var data = JSON.parse(xhr.responseText);
+
+
+                /* FIND CURRENT HOUR */
+
+                var currentHour =
+                    data.current.time.substring(0, 13);
+
+                var startIndex = 0;
+
+
+                for (var j = 0; j < data.hourly.time.length; j++) {
+
+                    if (
+                        data.hourly.time[j].substring(0, 13)
+                        === currentHour
+                    ) {
+
+                        startIndex = j;
+
+                        break;
+                    }
+                }
+
+
+                /* NEXT 6 HOURS */
+
+                var weatherText = "";
+
+
+                for (
+                    var i = startIndex;
+                    i < startIndex + 6;
+                    i++
+                ) {
+
+                    var time =
+                        data.hourly.time[i].substring(11, 16);
+
+                    var temperature =
+                        Math.round(
+                            data.hourly.temperature_2m[i]
+                        );
+
+                    var rain =
+                        data.hourly.precipitation_probability[i];
+
+                    var icon =
+                        getWeatherIcon(
+                            data.hourly.weather_code[i]
+                        );
+
+
+                    weatherText +=
+
+                        "<div class='forecast-row'>" +
+
+                        "<span class='forecast-time'>" +
+                        time +
+                        "</span>" +
+
+                        "<span class='forecast-temp'>" +
+                        temperature +
+                        "°C" +
+                        "</span>" +
+
+                        "<span>" +
+                        rain +
+                        "% rain" +
+                        "</span>" +
+
+                        "</div>";
+                }
+
+
+                document.getElementById("weatherText").innerHTML =
+                    weatherText;
+
+
+                /* NEXT FEW DAYS */
+
+                var dailyText = "";
+
+
+                var dayNames = [
+                    "SUN",
+                    "MON",
+                    "TUE",
+                    "WED",
+                    "THU",
+                    "FRI",
+                    "SAT"
+                ];
+
+
+                for (var d = 0; d < 5; d++) {
+
+                    var date =
+                        new Date(
+                            data.daily.time[d] + "T12:00:00"
+                        );
+
+                    var day =
+                        dayNames[date.getDay()];
+
+                    var maxTemp =
+                        Math.round(
+                            data.daily.temperature_2m_max[d]
+                        );
+
+                    var minTemp =
+                        Math.round(
+                            data.daily.temperature_2m_min[d]
+                        );
+
+                    var rainChance =
+                        data.daily.precipitation_probability_max[d];
+
+                    var dailyIcon =
+                        getWeatherIcon(
+                            data.daily.weather_code[d]
+                        );
+
+
+                    dailyText +=
+
+                        "<div class='day-row'>" +
+
+                        "<span class='day-name'>" +
+                        day +
+                        "</span>" +
+
+                        "<span class='day-temp'>" +
+                        maxTemp +
+                        "° / " +
+                        minTemp +
+                        "°" +
+                        "</span>" +
+
+                        "<span class='day-rain'>" +
+                        rainChance +
+                        "% rain" +
+                        "</span>" +
+
+                        "<img class='day-icon' src='" +
+                        dailyIcon +
+                        "'>" +
+
+                        "</div>";
+                }
+
+
+                document.getElementById("dailyText").innerHTML =
+                    dailyText;
+
+
+                /* SUNRISE / SUNSET */
+
+                var sunrise =
+                    data.daily.sunrise[0].substring(11, 16);
+
+                var sunset =
+                    data.daily.sunset[0].substring(11, 16);
+
+
+                document.getElementById("sunriseText").innerHTML =
+                    sunrise;
+
+                document.getElementById("sunsetText").innerHTML =
+                    sunset;
+
+            }
+
+        };
+
+
+        xhr.send();
+
+    </script>
+
+</body>
+</html>
