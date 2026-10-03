@@ -10,11 +10,12 @@
         body {
             background: white;
             color: black;
-            font-family: Arial, sans-serif;
+            font-family: "Courier New", monospace;
             margin: 30px;
         }
 
         h1 {
+            font-family: Arial, sans-serif;
             font-size: 42px;
             margin-bottom: 5px;
         }
@@ -44,6 +45,7 @@
         }
 
         .weather-title {
+            font-family: Arial, sans-serif;
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 20px;
@@ -66,6 +68,7 @@
         }
 
         .subheading {
+            font-family: Arial, sans-serif;
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 12px;
@@ -110,6 +113,13 @@
             vertical-align: middle;
         }
 
+        .day-icon {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
         .day-temp {
             display: inline-block;
             width: 90px;
@@ -121,13 +131,6 @@
             vertical-align: middle;
         }
 
-        .day-icon {
-            width: 40px;
-            height: 40px;
-            vertical-align: middle;
-            margin-left: 8px;
-        }
-
         .news-box {
             border-top: 3px solid black;
             padding-top: 15px;
@@ -135,6 +138,7 @@
         }
 
         .news-title {
+            font-family: Arial, sans-serif;
             font-size: 32px;
             font-weight: bold;
         }
@@ -446,6 +450,10 @@
                         day +
                         "</span>" +
 
+                        "<img class='day-icon' src='" +
+                        dailyIcon +
+                        "'>" +
+
                         "<span class='day-temp'>" +
                         maxTemp +
                         "° / " +
@@ -457,10 +465,6 @@
                         rainChance +
                         "% rain" +
                         "</span>" +
-
-                        "<img class='day-icon' src='" +
-                        dailyIcon +
-                        "'>" +
 
                         "</div>";
                 }
