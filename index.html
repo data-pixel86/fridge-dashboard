@@ -70,12 +70,8 @@
     <script>
         var now = new Date();
 
-        document.getElementById("date").innerHTML =
-            now.toLocaleDateString("en-GB", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric"
+        document.getElementById("date").innerHTML = now.toDateString();
+    
             });
  var xhr = new XMLHttpRequest();
 
