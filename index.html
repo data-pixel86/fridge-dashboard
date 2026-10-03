@@ -50,7 +50,7 @@
     <div class="box">
         <div class="weather">🌤 WEATHER</div>
         <p>Manchester</p>
-        <p>12°C · Partly cloudy</p>
+        <p id="weatherText">Loading weather...</p>
     </div>
 
     <div class="box">
@@ -75,6 +75,14 @@
                 month: "long",
                 year: "numeric"
             });
+            fetch("https://api.open-meteo.com/v1/forecast?latitude=53.4808&longitude=-2.2426&current=temperature_2m,weather_code&timezone=Europe%2FLondon")
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            document.getElementById("weatherText").innerHTML =
+                Math.round(data.current.temperature_2m) + "°C";
+        });
     </script>
 
 </body>
