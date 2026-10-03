@@ -6,6 +6,7 @@
     <title>Fridge Newspaper</title>
 
     <style>
+
         body {
             background: white;
             color: black;
@@ -42,12 +43,77 @@
             padding-top: 15px;
         }
 
-      .box {
-    padding-top: 5px;
-    margin-top: 8px;
-}
+        .weather-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
 
-        .weather {
+        .weather-layout {
+            width: 100%;
+        }
+
+        .weather-left {
+            width: 50%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .weather-right {
+            width: 45%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .subheading {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .forecast-row {
+            font-size: 20px;
+            margin: 12px 0;
+        }
+
+        .forecast-time {
+            display: inline-block;
+            width: 70px;
+            font-weight: bold;
+        }
+
+        .forecast-temp {
+            display: inline-block;
+            width: 65px;
+        }
+
+        .day-row {
+            font-size: 20px;
+            margin: 12px 0;
+        }
+
+        .day-name {
+            display: inline-block;
+            width: 55px;
+            font-weight: bold;
+        }
+
+        .day-temp {
+            display: inline-block;
+            width: 110px;
+        }
+
+        .day-rain {
+            display: inline-block;
+        }
+
+        .news-box {
+            border-top: 3px solid black;
+            padding-top: 15px;
+            margin-top: 20px;
+        }
+
+        .news-title {
             font-size: 32px;
             font-weight: bold;
         }
@@ -56,6 +122,7 @@
             font-size: 28px;
             margin: 18px 0;
         }
+
     </style>
 </head>
 
@@ -81,19 +148,57 @@
 
     <div class="divider"></div>
 
-    <div class="box">
 
-        <div class="weather">WEATHER</div>
+    <!-- WEATHER -->
 
-        <p>Manchester</p>
+    <div class="weather-title">
+        WEATHER
+    </div>
 
-        <div id="weatherText">Loading weather...</div>
+
+    <div class="weather-layout">
+
+
+        <!-- LEFT COLUMN -->
+
+        <div class="weather-left">
+
+            <div class="subheading">
+                NEXT 6 HRS.
+            </div>
+
+            <div id="weatherText">
+                Loading weather...
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="weather-right">
+
+            <div class="subheading">
+                NEXT FEW DAYS
+            </div>
+
+            <div id="dailyText">
+                Loading forecast...
+            </div>
+
+        </div>
+
 
     </div>
 
-    <div class="box">
 
-        <div class="weather">NEWS</div>
+    <!-- NEWS -->
+
+    <div class="news-box">
+
+        <div class="news-title">
+            NEWS
+        </div>
 
         <div class="headline">
             Welcome to your fridge newspaper.
@@ -105,7 +210,10 @@
 
     </div>
 
+
     <script>
+
+        /* DATE */
 
         var now = new Date();
 
@@ -113,11 +221,13 @@
             now.toDateString();
 
 
+        /* WEATHER API */
+
         var xhr = new XMLHttpRequest();
 
         xhr.open(
             "GET",
-            "https://api.open-meteo.com/v1/forecast?latitude=53.4808&longitude=-2.2426&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m&daily=sunrise,sunset&timezone=Europe%2FLondon&forecast_days=2",
+            "https://api.open-meteo.com/v1/forecast?latitude=53.4808&longitude=-2.2426&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=Europe%2FLondon&forecast_days=5",
             true
         );
 
@@ -129,14 +239,20 @@
                 var data = JSON.parse(xhr.responseText);
 
 
-                var currentHour = data.current.time.substring(0, 13);
+                /* FIND CURRENT HOUR */
+
+                var currentHour =
+                    data.current.time.substring(0, 13);
 
                 var startIndex = 0;
 
 
                 for (var j = 0; j < data.hourly.time.length; j++) {
 
-                    if (data.hourly.time[j].substring(0, 13) === currentHour) {
+                    if (
+                        data.hourly.time[j].substring(0, 13)
+                        === currentHour
+                    ) {
 
                         startIndex = j;
 
@@ -145,26 +261,47 @@
                 }
 
 
+                /* NEXT 6 HOURS */
+
                 var weatherText = "";
 
 
-                for (var i = startIndex; i < startIndex + 8; i++) {
+                for (
+                    var i = startIndex;
+                    i < startIndex + 6;
+                    i++
+                ) {
 
                     var time =
                         data.hourly.time[i].substring(11, 16);
 
                     var temperature =
-                        Math.round(data.hourly.temperature_2m[i]);
+                        Math.round(
+                            data.hourly.temperature_2m[i]
+                        );
 
                     var rain =
                         data.hourly.precipitation_probability[i];
 
 
                     weatherText +=
-                        "<div style='margin: 12px 0;'>" +
-                        "<strong>" + time + "</strong> &nbsp; " +
-                        temperature + "°C &nbsp; " +
-                        rain + "% rain" +
+
+                        "<div class='forecast-row'>" +
+
+                        "<span class='forecast-time'>" +
+                        time +
+                        "</span>" +
+
+                        "<span class='forecast-temp'>" +
+                        temperature +
+                        "°C" +
+                        "</span>" +
+
+                        "<span>" +
+                        rain +
+                        "% rain" +
+                        "</span>" +
+
                         "</div>";
                 }
 
@@ -172,6 +309,76 @@
                 document.getElementById("weatherText").innerHTML =
                     weatherText;
 
+
+                /* NEXT FEW DAYS */
+
+                var dailyText = "";
+
+
+                var dayNames = [
+                    "SUN",
+                    "MON",
+                    "TUE",
+                    "WED",
+                    "THU",
+                    "FRI",
+                    "SAT"
+                ];
+
+
+                for (var d = 0; d < 5; d++) {
+
+                    var date =
+                        new Date(
+                            data.daily.time[d] + "T12:00:00"
+                        );
+
+                    var day =
+                        dayNames[date.getDay()];
+
+                    var maxTemp =
+                        Math.round(
+                            data.daily.temperature_2m_max[d]
+                        );
+
+                    var minTemp =
+                        Math.round(
+                            data.daily.temperature_2m_min[d]
+                        );
+
+                    var rainChance =
+                        data.daily.precipitation_probability_max[d];
+
+
+                    dailyText +=
+
+                        "<div class='day-row'>" +
+
+                        "<span class='day-name'>" +
+                        day +
+                        "</span>" +
+
+                        "<span class='day-temp'>" +
+                        maxTemp +
+                        "° / " +
+                        minTemp +
+                        "°" +
+                        "</span>" +
+
+                        "<span class='day-rain'>" +
+                        rainChance +
+                        "% rain" +
+                        "</span>" +
+
+                        "</div>";
+                }
+
+
+                document.getElementById("dailyText").innerHTML =
+                    dailyText;
+
+
+                /* SUNRISE / SUNSET */
 
                 var sunrise =
                     data.daily.sunrise[0].substring(11, 16);
@@ -197,4 +404,3 @@
 
 </body>
 </html>
-```
