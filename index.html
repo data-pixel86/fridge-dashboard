@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,9 +19,28 @@
             margin-bottom: 5px;
         }
 
-        #date {
-            font-size: 24px;
-            margin-bottom: 30px;
+        .date-row {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .date {
+            display: inline-block;
+        }
+
+        .sun-times {
+            float: right;
+            text-align: right;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .divider {
+            border-top: 3px solid black;
+            margin-top: 10px;
+            padding-top: 15px;
         }
 
         .box {
@@ -45,18 +65,37 @@
 
     <h1>THE FRIDGE</h1>
 
-    <div id="date"></div>
+    <div class="date-row">
+
+        <div class="date">
+            <span id="date"></span>
+        </div>
+
+        <div class="sun-times">
+            SUNRISE <span id="sunriseText">--:--</span>
+            &nbsp;&nbsp;
+            SUNSET <span id="sunsetText">--:--</span>
+        </div>
+
+        <div class="clear"></div>
+
+    </div>
+
+    <div class="divider"></div>
 
     <div class="box">
-        <div class="weather">🌤 WEATHER</div>
+
+        <div class="weather">WEATHER</div>
+
         <p>Manchester</p>
-<div id="sunText">☀ Loading sunrise/sunset...</div>
+
         <div id="weatherText">Loading weather...</div>
 
     </div>
 
     <div class="box">
-        <div class="weather">📰 NEWS</div>
+
+        <div class="weather">NEWS</div>
 
         <div class="headline">
             Welcome to your fridge newspaper.
@@ -65,65 +104,99 @@
         <div class="headline">
             Your daily briefing will appear here.
         </div>
+
     </div>
 
     <script>
+
         var now = new Date();
 
-        document.getElementById("date").innerHTML = now.toDateString();
+        document.getElementById("date").innerHTML =
+            now.toDateString();
 
- var xhr = new XMLHttpRequest();
 
-xhr.open(
-    "GET",
-    "https://api.open-meteo.com/v1/forecast?latitude=53.4808&longitude=-2.2426&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m&daily=sunrise,sunset&timezone=Europe%2FLondon&forecast_days=2",
-    true
-);
+        var xhr = new XMLHttpRequest();
 
-xhr.onreadystatechange = function() {
+        xhr.open(
+            "GET",
+            "https://api.open-meteo.com/v1/forecast?latitude=53.4808&longitude=-2.2426&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m&daily=sunrise,sunset&timezone=Europe%2FLondon&forecast_days=2",
+            true
+        );
 
-    if (xhr.readyState === 4 && xhr.status === 200) {
 
-        var data = JSON.parse(xhr.responseText);
+        xhr.onreadystatechange = function() {
 
-        var currentHour = data.current.time.substring(0, 13);
-        var startIndex = 0;
+            if (xhr.readyState === 4 && xhr.status === 200) {
 
-        for (var j = 0; j < data.hourly.time.length; j++) {
-            if (data.hourly.time[j].substring(0, 13) === currentHour) {
-                startIndex = j;
-                break;
+                var data = JSON.parse(xhr.responseText);
+
+
+                var currentHour = data.current.time.substring(0, 13);
+
+                var startIndex = 0;
+
+
+                for (var j = 0; j < data.hourly.time.length; j++) {
+
+                    if (data.hourly.time[j].substring(0, 13) === currentHour) {
+
+                        startIndex = j;
+
+                        break;
+                    }
+                }
+
+
+                var weatherText = "";
+
+
+                for (var i = startIndex; i < startIndex + 8; i++) {
+
+                    var time =
+                        data.hourly.time[i].substring(11, 16);
+
+                    var temperature =
+                        Math.round(data.hourly.temperature_2m[i]);
+
+                    var rain =
+                        data.hourly.precipitation_probability[i];
+
+
+                    weatherText +=
+                        "<div style='margin: 12px 0;'>" +
+                        "<strong>" + time + "</strong> &nbsp; " +
+                        temperature + "°C &nbsp; " +
+                        rain + "% rain" +
+                        "</div>";
+                }
+
+
+                document.getElementById("weatherText").innerHTML =
+                    weatherText;
+
+
+                var sunrise =
+                    data.daily.sunrise[0].substring(11, 16);
+
+                var sunset =
+                    data.daily.sunset[0].substring(11, 16);
+
+
+                document.getElementById("sunriseText").innerHTML =
+                    sunrise;
+
+                document.getElementById("sunsetText").innerHTML =
+                    sunset;
+
             }
-        }
 
-        var weatherText = "";
+        };
 
-        for (var i = startIndex; i < startIndex + 8; i++) {
 
-            var time = data.hourly.time[i].substring(11, 16);
-            var temperature = Math.round(data.hourly.temperature_2m[i]);
-            var rain = data.hourly.precipitation_probability[i];
+        xhr.send();
 
-            weatherText +=
-                "<div style='margin: 12px 0;'>" +
-                "<strong>" + time + "</strong> &nbsp; " +
-                temperature + "°C &nbsp; " +
-                rain + "% rain" +
-                "</div>";
-        }
-
-        document.getElementById("weatherText").innerHTML = weatherText;
-
-        var sunrise = data.daily.sunrise[0].substring(11, 16);
-        var sunset = data.daily.sunset[0].substring(11, 16);
-
-        document.getElementById("sunText").innerHTML =
-            "☀ Sunrise " + sunrise + " &nbsp; ☾ Sunset " + sunset;
-    }
-};
-
-xhr.send();
     </script>
 
 </body>
 </html>
+```
