@@ -74,51 +74,58 @@
         .forecast-row {
             font-size: 20px;
             margin: 8px 0;
+            height: 40px;
         }
 
         .forecast-time {
             display: inline-block;
-            width: 70px;
-            font-weight: bold;
-        }
-
-        .forecast-temp {
-            display: inline-block;
             width: 65px;
+            font-weight: bold;
+            vertical-align: middle;
         }
 
         .forecast-icon {
             width: 40px;
             height: 40px;
             vertical-align: middle;
-            margin-left: 10px;
+            margin-right: 8px;
+        }
+
+        .forecast-temp {
+            display: inline-block;
+            width: 60px;
+            vertical-align: middle;
         }
 
         .day-row {
             font-size: 20px;
             margin: 8px 0;
+            height: 40px;
         }
 
         .day-name {
             display: inline-block;
-            width: 55px;
+            width: 50px;
             font-weight: bold;
+            vertical-align: middle;
         }
 
         .day-temp {
             display: inline-block;
-            width: 110px;
+            width: 90px;
+            vertical-align: middle;
         }
 
         .day-rain {
             display: inline-block;
+            vertical-align: middle;
         }
 
         .day-icon {
             width: 40px;
             height: 40px;
             vertical-align: middle;
-            margin-left: 10px;
+            margin-left: 8px;
         }
 
         .news-box {
@@ -178,7 +185,7 @@
         <div class="weather-left">
 
             <div class="subheading">
-                NEXT 6 HRS.
+                NEXT 5 HRS.
             </div>
 
             <div id="weatherText">
@@ -328,14 +335,14 @@
                 }
 
 
-                /* NEXT 6 HOURS */
+                /* NEXT 5 HOURS */
 
                 var weatherText = "";
 
 
                 for (
                     var i = startIndex;
-                    i < startIndex + 6;
+                    i < startIndex + 5;
                     i++
                 ) {
 
@@ -350,7 +357,7 @@
                     var rain =
                         data.hourly.precipitation_probability[i];
 
-                    var icon =
+                    var hourlyIcon =
                         getWeatherIcon(
                             data.hourly.weather_code[i]
                         );
@@ -363,6 +370,10 @@
                         "<span class='forecast-time'>" +
                         time +
                         "</span>" +
+
+                        "<img class='forecast-icon' src='" +
+                        hourlyIcon +
+                        "'>" +
 
                         "<span class='forecast-temp'>" +
                         temperature +
