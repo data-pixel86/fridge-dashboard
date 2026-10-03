@@ -50,6 +50,7 @@
     <div class="box">
         <div class="weather">🌤 WEATHER</div>
         <p>Manchester</p>
+<div id="sunText">☀ Loading sunrise/sunset...</div>
         <div id="weatherText">Loading weather...</div>
     </div>
 
@@ -75,7 +76,7 @@
                 month: "long",
                 year: "numeric"
             });
-  fetch("https://api.open-meteo.com/v1/forecast?latitude=53.4808&longitude=-2.2426&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m&timezone=Europe%2FLondon&forecast_days=2")
+  fetch("https://api.open-meteo.com/v1/forecast?latitude=53.4808&longitude=-2.2426&hourly=temperature_2m,weather_code,precipitation_probability&current=temperature_2m&daily=sunrise,sunset&timezone=Europe%2FLondon&forecast_days=2)
     .then(function(response) {
         return response.json();
     })
@@ -108,6 +109,12 @@
         }
 
         document.getElementById("weatherText").innerHTML = weatherText;
+        
+        var sunrise = data.daily.sunrise[0].substring(11, 16);
+        var sunset = data.daily.sunset[0].substring(11, 16);
+
+document.getElementById("sunText").innerHTML =
+    "☀ Sunrise " + sunrise + " &nbsp; ☾ Sunset " + sunset;
     });
     </script>
 
