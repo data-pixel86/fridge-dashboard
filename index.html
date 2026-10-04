@@ -641,7 +641,7 @@ newsXhr.onreadystatechange = function() {
     newsData.items[n].description ||
     newsData.items[n].content ||
     "";
-
+var image = newsData.items[n].thumbnail;
                 /* Remove HTML from the BBC summary */
 
                 var temp = document.createElement("div");
