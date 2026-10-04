@@ -637,7 +637,10 @@ newsXhr.onreadystatechange = function() {
             ) {
 
                 var title = newsData.items[n].title;
-                var description = newsData.items[n].description;
+               var description =
+    newsData.items[n].description ||
+    newsData.items[n].content ||
+    "";
 
                 /* Remove HTML from the BBC summary */
 
