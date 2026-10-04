@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Fridge Newspaper</title>
 
     <style>
@@ -14,11 +17,7 @@
             margin: 30px;
         }
 
-        h1 {
-            font-family: Arial, sans-serif;
-            font-size: 42px;
-            margin-bottom: 5px;
-        }
+        /* HEADER */
 
         .date-row {
             font-size: 24px;
@@ -38,11 +37,15 @@
             clear: both;
         }
 
+        /* DIVIDER */
+
         .divider {
             border-top: 3px solid black;
             margin-top: 10px;
             padding-top: 15px;
         }
+
+        /* WEATHER */
 
         .weather-title {
             font-family: Arial, sans-serif;
@@ -56,13 +59,13 @@
         }
 
         .weather-left {
-            width: 50%;
+            width: 48%;
             display: inline-block;
             vertical-align: top;
         }
 
         .weather-right {
-            width: 45%;
+            width: 48%;
             display: inline-block;
             vertical-align: top;
         }
@@ -74,10 +77,13 @@
             margin-bottom: 12px;
         }
 
+        /* HOURLY FORECAST */
+
         .forecast-row {
             font-size: 22px;
             margin: 8px 0;
             height: 40px;
+            white-space: nowrap;
         }
 
         .forecast-time {
@@ -100,41 +106,48 @@
             vertical-align: middle;
         }
 
-       
-      .day-row {
-    font-size: 22px;
-    margin: 8px 0;
-    height: 40px;
-    white-space: nowrap;
-}
+        /* DAILY FORECAST */
 
-.day-name {
-    display: inline-block;
-    width: 50px;
-    font-weight: bold;
-    vertical-align: middle;
-}
+        .daily-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            font-size: 22px;
+        }
 
-.day-icon {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    vertical-align: middle;
-    margin-right: 5px;
-}
+        .daily-table tr {
+            height: 40px;
+        }
 
-.day-temp {
-    display: inline-block;
-    width: 85px;
-    vertical-align: middle;
-    white-space: nowrap;
-}
+        .daily-day {
+            width: 55px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
 
-.day-rain {
-    display: inline-block;
-    vertical-align: middle;
-    white-space: nowrap;
-}
+        .daily-icon {
+            width: 45px;
+            vertical-align: middle;
+        }
+
+        .daily-icon img {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+        }
+
+        .daily-temp {
+            width: 105px;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .daily-rain {
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        /* NEWS */
 
         .news-box {
             border-top: 3px solid black;
@@ -144,7 +157,7 @@
 
         .news-title {
             font-family: Arial, sans-serif;
-            font-size: 32px;
+            font-size: 34px;
             font-weight: bold;
         }
 
@@ -154,9 +167,14 @@
         }
 
     </style>
+
 </head>
 
+
 <body>
+
+
+    <!-- HEADER -->
 
     <div class="date-row">
 
@@ -165,14 +183,21 @@
         </div>
 
         <div class="sun-times">
-            SUNRISE <span id="sunriseText">--:--</span>
+
+            SUNRISE
+            <span id="sunriseText">--:--</span>
+
             &nbsp;&nbsp;
-            SUNSET <span id="sunsetText">--:--</span>
+
+            SUNSET
+            <span id="sunsetText">--:--</span>
+
         </div>
 
         <div class="clear"></div>
 
     </div>
+
 
     <div class="divider"></div>
 
@@ -210,9 +235,19 @@
                 NEXT FEW DAYS
             </div>
 
-            <div id="dailyText">
-                Loading forecast...
-            </div>
+            <table class="daily-table">
+
+                <tbody id="dailyText">
+
+                    <tr>
+                        <td colspan="4">
+                            Loading forecast...
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
 
         </div>
 
@@ -240,6 +275,7 @@
 
 
     <script>
+
 
         /* DATE */
 
@@ -315,9 +351,12 @@
 
         xhr.onreadystatechange = function() {
 
+
             if (xhr.readyState === 4 && xhr.status === 200) {
 
-                var data = JSON.parse(xhr.responseText);
+
+                var data =
+                    JSON.parse(xhr.responseText);
 
 
                 /* FIND CURRENT HOUR */
@@ -328,7 +367,11 @@
                 var startIndex = 0;
 
 
-                for (var j = 0; j < data.hourly.time.length; j++) {
+                for (
+                    var j = 0;
+                    j < data.hourly.time.length;
+                    j++
+                ) {
 
                     if (
                         data.hourly.time[j].substring(0, 13)
@@ -338,7 +381,9 @@
                         startIndex = j;
 
                         break;
+
                     }
+
                 }
 
 
@@ -353,16 +398,20 @@
                     i++
                 ) {
 
+
                     var time =
                         data.hourly.time[i].substring(11, 16);
+
 
                     var temperature =
                         Math.round(
                             data.hourly.temperature_2m[i]
                         );
 
+
                     var rain =
                         data.hourly.precipitation_probability[i];
+
 
                     var hourlyIcon =
                         getWeatherIcon(
@@ -374,25 +423,26 @@
 
                         "<div class='forecast-row'>" +
 
-                        "<span class='forecast-time'>" +
-                        time +
-                        "</span>" +
+                            "<span class='forecast-time'>" +
+                                time +
+                            "</span>" +
 
-                        "<img class='forecast-icon' src='" +
-                        hourlyIcon +
-                        "'>" +
+                            "<img class='forecast-icon' src='" +
+                                hourlyIcon +
+                            "'>" +
 
-                        "<span class='forecast-temp'>" +
-                        temperature +
-                        "°C" +
-                        "</span>" +
+                            "<span class='forecast-temp'>" +
+                                temperature +
+                                "°C" +
+                            "</span>" +
 
-                        "<span>" +
-                        rain +
-                        "% rain" +
-                        "</span>" +
+                            "<span>" +
+                                rain +
+                                "% rain" +
+                            "</span>" +
 
                         "</div>";
+
                 }
 
 
@@ -416,28 +466,39 @@
                 ];
 
 
-                for (var d = 0; d < 5; d++) {
+                for (
+                    var d = 0;
+                    d < 5;
+                    d++
+                ) {
+
 
                     var date =
                         new Date(
-                            data.daily.time[d] + "T12:00:00"
+                            data.daily.time[d] +
+                            "T12:00:00"
                         );
+
 
                     var day =
                         dayNames[date.getDay()];
+
 
                     var maxTemp =
                         Math.round(
                             data.daily.temperature_2m_max[d]
                         );
 
+
                     var minTemp =
                         Math.round(
                             data.daily.temperature_2m_min[d]
                         );
 
+
                     var rainChance =
                         data.daily.precipitation_probability_max[d];
+
 
                     var dailyIcon =
                         getWeatherIcon(
@@ -447,29 +508,38 @@
 
                     dailyText +=
 
-                        "<div class='day-row'>" +
+                        "<tr>" +
 
-                        "<span class='day-name'>" +
-                        day +
-                        "</span>" +
+                            "<td class='daily-day'>" +
+                                day +
+                            "</td>" +
 
-                        "<img class='day-icon' src='" +
-                        dailyIcon +
-                        "'>" +
+                            "<td class='daily-icon'>" +
 
-                        "<span class='day-temp'>" +
-                        maxTemp +
-                        "° / " +
-                        minTemp +
-                        "°" +
-                        "</span>" +
+                                "<img src='" +
+                                    dailyIcon +
+                                "'>" +
 
-                        "<span class='day-rain'>" +
-                        rainChance +
-                        "% rain" +
-                        "</span>" +
+                            "</td>" +
 
-                        "</div>";
+                            "<td class='daily-temp'>" +
+
+                                maxTemp +
+                                "° / " +
+                                minTemp +
+                                "°" +
+
+                            "</td>" +
+
+                            "<td class='daily-rain'>" +
+
+                                rainChance +
+                                "% rain" +
+
+                            "</td>" +
+
+                        "</tr>";
+
                 }
 
 
@@ -482,6 +552,7 @@
                 var sunrise =
                     data.daily.sunrise[0].substring(11, 16);
 
+
                 var sunset =
                     data.daily.sunset[0].substring(11, 16);
 
@@ -489,8 +560,10 @@
                 document.getElementById("sunriseText").innerHTML =
                     sunrise;
 
+
                 document.getElementById("sunsetText").innerHTML =
                     sunset;
+
 
             }
 
@@ -499,7 +572,10 @@
 
         xhr.send();
 
+
     </script>
 
+
 </body>
+
 </html>
