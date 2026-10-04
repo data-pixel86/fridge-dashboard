@@ -307,17 +307,10 @@
     <!-- NEWS -->
 
     
-    <div class="news-box">
-
-        
-    <div class="news-title">
-        NEWS
-    </div>
-
-    <div id="newsText">
-        Loading news...
-    </div>
-
+   <div class="news-box">
+    <div class="news-title">NEWS — UPDATED <span id="updatedTime"></span></div>
+    <div id="newsText">Loading news...</div>
+</div>
 </div>
 
 
@@ -716,6 +709,24 @@ setInterval(function() {
         new Date().getTime();
 }, 1800000);
 
+/* LAST UPDATED */
+
+var updateTime = new Date();
+
+var updateHours = updateTime.getHours();
+var updateMinutes = updateTime.getMinutes();
+
+if (updateHours < 10) {
+    updateHours = "0" + updateHours;
+}
+
+if (updateMinutes < 10) {
+    updateMinutes = "0" + updateMinutes;
+}
+
+document.getElementById("updatedTime").innerHTML =
+    updateHours + ":" + updateMinutes;
+        
     </script>
 
 
