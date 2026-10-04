@@ -270,19 +270,15 @@
 
     <div class="news-box">
 
-        <div class="news-title">
-            NEWS
-        </div>
-
-        <div class="headline">
-            Welcome to your fridge newspaper.
-        </div>
-
-        <div class="headline">
-            Your daily briefing will appear here.
-        </div>
-
+    <div class="news-title">
+        NEWS
     </div>
+
+    <div id="newsText">
+        Loading news...
+    </div>
+
+</div>
 
 
     <script>
@@ -588,6 +584,55 @@
 
         xhr.send();
 
+        /* NEWS */
+
+var newsXhr = new XMLHttpRequest();
+
+newsXhr.open(
+    "GET",
+    "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Frss.xml",
+    true
+);
+
+newsXhr.onreadystatechange = function() {
+
+    if (
+        newsXhr.readyState === 4 &&
+        newsXhr.status === 200
+    ) {
+
+        var newsData = JSON.parse(newsXhr.responseText);
+
+        var newsText = "";
+
+        if (newsData.status === "ok") {
+
+            for (
+                var n = 0;
+                n < 3 && n < newsData.items.length;
+                n++
+            ) {
+
+                newsText +=
+                    "<div class='headline'>" +
+                    "☐ " +
+                    newsData.items[n].title +
+                    "</div>";
+
+            }
+
+        } else {
+
+            newsText = "News feed unavailable.";
+
+        }
+
+        document.getElementById("newsText").innerHTML =
+            newsText;
+    }
+};
+
+newsXhr.send();
 
     </script>
 
