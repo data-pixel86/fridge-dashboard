@@ -13,9 +13,10 @@
         body {
             background: white;
             color: black;
-            font-family: "Courier New", monospace;
+            font-family: monospace;
             margin: 30px;
         }
+
 
         /* HEADER */
 
@@ -37,6 +38,7 @@
             clear: both;
         }
 
+
         /* DIVIDER */
 
         .divider {
@@ -44,6 +46,7 @@
             margin-top: 10px;
             padding-top: 15px;
         }
+
 
         /* WEATHER */
 
@@ -77,6 +80,7 @@
             margin-bottom: 12px;
         }
 
+
         /* HOURLY FORECAST */
 
         .forecast-row {
@@ -106,6 +110,7 @@
             vertical-align: middle;
         }
 
+
         /* DAILY FORECAST */
 
         .daily-table {
@@ -121,6 +126,7 @@
 
         .daily-day {
             width: 55px;
+            font-family: monospace;
             font-weight: bold;
             vertical-align: middle;
         }
@@ -137,15 +143,18 @@
         }
 
         .daily-temp {
-            width: 105px;
+            width: 115px;
             vertical-align: middle;
             white-space: nowrap;
+            padding-right: 10px;
         }
 
         .daily-rain {
             vertical-align: middle;
             white-space: nowrap;
+            padding-left: 5px;
         }
+
 
         /* NEWS */
 
@@ -240,9 +249,11 @@
                 <tbody id="dailyText">
 
                     <tr>
+
                         <td colspan="4">
                             Loading forecast...
                         </td>
+
                     </tr>
 
                 </tbody>
@@ -335,6 +346,7 @@
             }
 
             return "images/CLOUDY.png";
+
         }
 
 
@@ -352,7 +364,10 @@
         xhr.onreadystatechange = function() {
 
 
-            if (xhr.readyState === 4 && xhr.status === 200) {
+            if (
+                xhr.readyState === 4 &&
+                xhr.status === 200
+            ) {
 
 
                 var data =
@@ -372,6 +387,7 @@
                     j < data.hourly.time.length;
                     j++
                 ) {
+
 
                     if (
                         data.hourly.time[j].substring(0, 13)
