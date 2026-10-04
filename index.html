@@ -14,6 +14,14 @@
     margin: 22px 0;
 }
 
+.news-image {
+    width: 100px;
+    height: 70px;
+    object-fit: cover;
+    float: left;
+    margin-right: 15px;
+}
+        
 .news-headline {
     font-family: Arial, sans-serif;
     font-size: 26px;
@@ -651,20 +659,21 @@ var image = newsData.items[n].thumbnail;
                     temp.textContent ||
                     temp.innerText ||
                     "";
+            newsText +=
+    "<div class='news-story'>" +
 
-                newsText +=
-                    "<div class='news-story'>" +
+        "<img src='" + image + "' class='news-image'>" +
 
-                        "<div class='news-headline'>" +
-                            "<span class='news-checkbox'></span>" +
-title +
-                        "</div>" +
+        "<div class='news-headline'>" +
+            "<span class='news-checkbox'></span>" +
+            title +
+        "</div>" +
 
-                        "<div class='news-summary'>" +
-                            summary +
-                        "</div>" +
+        "<div class='news-summary'>" +
+            summary +
+        "</div>" +
 
-                    "</div>";
+    "</div>";
             }
 
         } else {
