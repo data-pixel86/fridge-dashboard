@@ -11,17 +11,29 @@
     <style>
 
 .news-story {
-    margin: 22px 0;
+    display: table;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.news-image-box {
+    display: table-cell;
+    width: 100px;
+    vertical-align: top;
 }
 
 .news-image {
-    width: 100px;
-    height: 70px;
+    width: 90px;
+    height: 65px;
     object-fit: cover;
-    float: left;
-    margin-right: 15px;
 }
-        
+
+.news-story-text {
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 12px;
+}
+
 .news-headline {
     font-family: Arial, sans-serif;
     font-size: 26px;
@@ -34,7 +46,6 @@
     font-size: 19px;
     line-height: 1.2;
     margin-top: 7px;
-    margin-left: 28px;
 }
         
         body {
@@ -661,18 +672,23 @@ var image = newsData.items[n].thumbnail;
                     temp.textContent ||
                     temp.innerText ||
                     "";
-            newsText +=
+  newsText +=
     "<div class='news-story'>" +
 
-        "<img src='" + image + "' class='news-image'>" +
-
-        "<div class='news-headline'>" +
-            "<span class='news-checkbox'></span>" +
-            title +
+        "<div class='news-image-box'>" +
+            "<img src='" + image + "' class='news-image'>" +
         "</div>" +
 
-        "<div class='news-summary'>" +
-            summary +
+        "<div class='news-story-text'>" +
+
+            "<div class='news-headline'>" +
+                title +
+            "</div>" +
+
+            "<div class='news-summary'>" +
+                summary +
+            "</div>" +
+
         "</div>" +
 
     "</div>";
