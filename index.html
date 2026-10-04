@@ -10,6 +10,25 @@
 
     <style>
 
+.news-story {
+    margin: 22px 0;
+}
+
+.news-headline {
+    font-family: Arial, sans-serif;
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 1.15;
+}
+
+.news-summary {
+    font-family: Arial, sans-serif;
+    font-size: 19px;
+    line-height: 1.2;
+    margin-top: 7px;
+    margin-left: 28px;
+}
+        
         body {
             background: white;
             color: black;
@@ -588,6 +607,10 @@
 
 var newsXhr = new XMLHttpRequest();
 
+/* NEWS */
+
+var newsXhr = new XMLHttpRequest();
+
 newsXhr.open(
     "GET",
     "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Frss.xml",
@@ -613,12 +636,31 @@ newsXhr.onreadystatechange = function() {
                 n++
             ) {
 
-                newsText +=
-                    "<div class='headline'>" +
-                    "☐ " +
-                    newsData.items[n].title +
-                    "</div>";
+                var title = newsData.items[n].title;
+                var description = newsData.items[n].description;
 
+                /* Remove HTML from the BBC summary */
+
+                var temp = document.createElement("div");
+                temp.innerHTML = description;
+
+                var summary =
+                    temp.textContent ||
+                    temp.innerText ||
+                    "";
+
+                newsText +=
+                    "<div class='news-story'>" +
+
+                        "<div class='news-headline'>" +
+                            "☐ " + title +
+                        "</div>" +
+
+                        "<div class='news-summary'>" +
+                            summary +
+                        "</div>" +
+
+                    "</div>";
             }
 
         } else {
@@ -631,6 +673,8 @@ newsXhr.onreadystatechange = function() {
             newsText;
     }
 };
+
+newsXhr.send();
 
 newsXhr.send();
 
