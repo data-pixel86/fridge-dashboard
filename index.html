@@ -707,7 +707,14 @@ var image = newsData.items[n].thumbnail;
 
 newsXhr.send();
 
-newsXhr.send();
+/* AUTO REFRESH */
+
+setInterval(function() {
+    window.location.href =
+        window.location.pathname +
+        "?refresh=" +
+        new Date().getTime();
+}, 1800000);
 
     </script>
 
