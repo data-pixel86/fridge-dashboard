@@ -644,17 +644,19 @@ newsXhr.onreadystatechange = function() {
 
         if (newsData.status === "ok") {
 
-            for (
-                var n = 0;
-                n < 3 && n < newsData.items.length;
-                n++
-            ) {
+    newsData.items.sort(function(a, b) {
+        return new Date(b.pubDate).getTime() -
+               new Date(a.pubDate).getTime();
+    });
 
-                var title = newsData.items[n].title;
-               var description =
-    newsData.items[n].description ||
-    newsData.items[n].content ||
-    "";
+    for (var n = 0; n < 3 && n < newsData.items.length; n++) {
+
+        var title = newsData.items[n].title;
+        var description =
+            newsData.items[n].description ||
+            newsData.items[n].content ||
+            "";
+       
 var image = newsData.items[n].thumbnail;
                 /* Remove HTML from the BBC summary */
 
